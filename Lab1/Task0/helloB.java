@@ -14,8 +14,8 @@ class helloB extends Thread {
     }
 
     public static void main(String[] args){
-        int numThreads = Runtime.getRuntime().availableProcessors(); // Get the number of CPU cores
-        System.out.println("Available number of threads: " + numThreads);         
+        int cpuNumThreads = Runtime.getRuntime().availableProcessors(); // Get the number of CPU cores
+        System.out.println("Available number of threads: " + cpuNumThreads);         
         
         helloB[] threads = new helloB[5];
 
