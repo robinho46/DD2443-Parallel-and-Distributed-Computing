@@ -14,6 +14,9 @@ javac MainA.java
 java Main
 ```
 
+Run the program locally with 4 threads. What results do you expect?
+- Between 1000000 and 4000000.
+
 ### Task 1b: Synchronized keyword
 Source files:
 
