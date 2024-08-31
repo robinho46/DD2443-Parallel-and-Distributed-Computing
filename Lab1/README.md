@@ -1,4 +1,4 @@
-- Group X
+- Group 15
 - Ezaz, Isahq and Yurt, Robin
 
 ## Task 1: Simple Synchronization
