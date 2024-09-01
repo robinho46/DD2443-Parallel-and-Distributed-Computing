@@ -17,7 +17,10 @@ public class MainC {
 		public void run() {
           synchronized(lock){
                 try {
-                    lock.wait();
+                    while(sharedInt < 1000000){
+                       lock.wait();
+                    }
+                    
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
