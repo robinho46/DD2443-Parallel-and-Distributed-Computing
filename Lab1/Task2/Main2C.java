@@ -1,4 +1,4 @@
-public class MainC {
+public class Main2C {
 	private static int sharedInt = 0;
     private static Object lock = new Object();
     

@@ -1,4 +1,4 @@
-public class MainA {
+public class Main2A {
 	private static int sharedInt;
 
     public static class Incrementer implements Runnable {

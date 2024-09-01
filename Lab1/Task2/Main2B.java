@@ -1,4 +1,4 @@
-public class MainB {
+public class Main2B {
 	private static  int sharedInt = 0;
     private static volatile boolean done = false;
 
