@@ -13,9 +13,7 @@ public class MainB {
 
 	public static class Printer implements Runnable {
 		public void run() {
-	        while(done == false){
-                
-            }
+	        while(!done){}
            
             System.out.println("Shared Int: " + sharedInt);
         }
