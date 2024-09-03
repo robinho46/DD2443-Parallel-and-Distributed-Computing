@@ -13,16 +13,16 @@ public class MainC {
                 }
             }
         }
-    } 
+    }
 
-	static long run_experiments(int n) {
+    static long run_experiments(int n) {
         Thread[] threads = new Thread[n];
-		long startTime = System.nanoTime();
-		for (int i = 0; i < threads.length; i++) {
+        long startTime = System.nanoTime();
+        for (int i = 0; i < threads.length; i++) {
             threads[i] = new Thread(new Incrementer());
             threads[i].start();
         }
-        
+
         for(int i = 0; i < threads.length; i++){
             try {
                 threads[i].join();
@@ -31,11 +31,11 @@ public class MainC {
             }
         }
 
-		long endTime = System.nanoTime();
-	    return endTime - startTime;
-	}
+        long endTime = System.nanoTime();
+        return endTime - startTime;
+    }
 
-	public static void main(String [] args) {
+    public static void main(String [] args) {
         int[] totalThreads = new int[]{1, 2, 4, 8, 16, 32, 64};
 
         int xIterations = 4;
@@ -46,7 +46,6 @@ public class MainC {
                 run_experiments(totalThreads[i]);
             }
         }
-        
 
         int yIterations = 4;
         double[][] results = new double[totalThreads.length][yIterations];
@@ -58,7 +57,6 @@ public class MainC {
                 //System.out.println( totalThreads[i] + ",: " + run_experiments(totalThreads[i])/ 1_000_000_000.0);
             }
         }
-        
         try {
             FileWriter myWriter = new FileWriter("filename.txt"); 
             for (int i = 0; i < results.length; i++) {
@@ -67,12 +65,11 @@ public class MainC {
                 } 
             }
             myWriter.close();
-              System.out.println("Successfully wrote to the file.");
+            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-              System.out.println("An error occurred.");
-              e.printStackTrace();
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
-    
 
         //long result = run_experiments(4);
         System.out.println("Final x: " + x);
