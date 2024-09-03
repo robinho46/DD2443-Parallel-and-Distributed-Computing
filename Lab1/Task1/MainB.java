@@ -11,15 +11,15 @@ public class MainB {
             }
         }
     }
-	
-	static long run_experiments(int n) {
+
+    static long run_experiments(int n) {
         Thread[] threads = new Thread[n];
-		long startTime = System.nanoTime();
-		for (int i = 0; i < n; i++) {
+        long startTime = System.nanoTime();
+        for (int i = 0; i < n; i++) {
             threads[i] = new Thread(new Incrementer());
             threads[i].start();
         }
-        
+
         for(int i = 0; i < threads.length; i++){
             try {
                 threads[i].join();
@@ -28,12 +28,11 @@ public class MainB {
             }
         }
 
-		long endTime = System.nanoTime();
-		
+        long endTime = System.nanoTime();
         return endTime - startTime;
-	}
+    }
 
-	public static void main(String [] args) {
+    public static void main(String [] args) {
         long result = run_experiments(4);
         System.out.println("Final x: " + x);
         System.out.println("Elapsed time: " + result + " nanoseconds"); // Print the elapsed time
