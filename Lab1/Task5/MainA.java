@@ -55,7 +55,7 @@ public class MainA {
      */
     
     public static void main(String [] args) {
-        Philosopher[] philosophers = new Philosopher[3];
+        Philosopher[] philosophers = new Philosopher[5];
         Lock[] forks = new ReentrantLock[philosophers.length];
 
         for (int i = 0; i < forks.length; i++) {
@@ -75,6 +75,5 @@ public class MainA {
             Thread t = new Thread(philosophers[i]);
             t.start();
         }
-        for(int i = 0; i < philosophers.le)
     }    
 }
