@@ -76,4 +76,3 @@ public class MainC {
         //System.out.println("Elapsed time: " + result + " nanoseconds"); // Print the elapsed time
     }
 }
-
