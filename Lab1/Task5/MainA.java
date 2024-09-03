@@ -1,12 +1,14 @@
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainA {
     
 	public static class Philosopher implements Runnable {
-        private Object leftFork = new Object();
-        private Object rightFork = new Object();
+        private Lock leftFork = new ReentrantLock();
+        private Lock rightFork = new ReentrantLock();
         private int id;
-        public Philosopher(Object leftFork, Object rightFork, int id) {
+
+        public Philosopher(Lock leftFork, Lock rightFork, int id) {
             this.leftFork = leftFork;
             this.rightFork = rightFork;
             this.id = id;
@@ -14,7 +16,7 @@ public class MainA {
         
         public void think() throws InterruptedException {
             System.out.println("Philosopher " + id + " is thinking");
-            Thread.sleep(10);    
+            Thread.sleep(10);
         }
 
         public void eat() throws InterruptedException {
@@ -28,12 +30,13 @@ public class MainA {
                 while (true) {
                     think();
                     synchronized (leftFork) {
+                        //Deadlock here since every philosopher starts with picking up the left fork
                         System.out.println("Philosopher " + id + " picked up left fork");
                         synchronized (rightFork) {
-                            System.out.println("Philosopher " + id + " picked up right fork");
+                            System.out.println("Philosopher " + id + " picked up left fork");
                             eat();
                         }
-                    }
+                    } 
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -52,16 +55,16 @@ public class MainA {
      */
     
     public static void main(String [] args) {
-        Philosopher[] philosophers = new Philosopher[5];
-        Object[] forks = new Object[philosophers.length];
+        Philosopher[] philosophers = new Philosopher[3];
+        Lock[] forks = new ReentrantLock[philosophers.length];
 
         for (int i = 0; i < forks.length; i++) {
-            forks[i] = new Object();
+            forks[i] = new ReentrantLock();
         }
 
         for (int i = 0; i < philosophers.length; i++) {
-            Object rightFork = forks[i];
-            Object leftFork;
+            Lock rightFork = forks[i];
+            Lock leftFork;
             if(i > 0){
                 leftFork = forks[i - 1];
             } else{
@@ -72,5 +75,6 @@ public class MainA {
             Thread t = new Thread(philosophers[i]);
             t.start();
         }
+        for(int i = 0; i < philosophers.le)
     }    
 }
