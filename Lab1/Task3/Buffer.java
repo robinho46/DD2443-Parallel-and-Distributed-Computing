@@ -33,7 +33,7 @@ public class Buffer {
             buffer.addLast(i); // when not full add
             empty.signal(); // signal consumers
             } finally {
-            lock.unlock(); // unlocks for handling any exception
+            lock.unlock();
             }
     }
 
@@ -44,9 +44,9 @@ public class Buffer {
                 if(close){
                     throw new IllegalStateException("Buffer is closed and empty");
                 }
-                empty.await();
+                empty.await(); // Consumers waits when the buffer is empty
             }
-            int a = buffer.removeFirst();
+            int a = buffer.removeFirst(); // Removes a element and gives a signal that the element has been removed
             full.signal();
             return a;
         } finally {
@@ -62,7 +62,7 @@ public class Buffer {
                     throw new IllegalStateException("Buffer is closed");
                 }
                 close = true;
-                full.signalAll();
+                full.signalAll(); // When the buffer is closed it signals the producer that the buffer is full
             }
         } finally {
             lock.unlock();

@@ -4,6 +4,7 @@ public class MainA {
     static volatile int x;
     public static class Incrementer implements Runnable {       
         public void run() {
+            // Not synchronized which may give different outputs each run
             for (int i = 0; i < 1000000; i++) {
                 x += 1;
             }   

@@ -5,6 +5,7 @@ public class MainB {
     public static class Incrementer implements Runnable {  
         public void run() { 
             for (int i = 0; i < 1000000; i++) {
+                // Synchronized block to perform the increment in sync with other threads
                 synchronized(Lock){
                     x += 1;
                 }

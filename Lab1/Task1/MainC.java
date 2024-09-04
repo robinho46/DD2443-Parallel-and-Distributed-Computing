@@ -14,7 +14,8 @@ public class MainC {
             }
         }
     }
-
+    
+    // run_experiments measures the time it takes to increment
     static long run_experiments(int n) {
         Thread[] threads = new Thread[n];
         long startTime = System.nanoTime();
@@ -37,7 +38,8 @@ public class MainC {
 
     public static void main(String [] args) {
         int[] totalThreads = new int[]{1, 2, 4, 8, 16, 32, 64};
-
+        
+        // xIterations represent the warmup phase
         int xIterations = 4;
         for(int i = 0; i < totalThreads.length; i++){
             x = 0;
@@ -46,7 +48,8 @@ public class MainC {
                 run_experiments(totalThreads[i]);
             }
         }
-
+        
+        // yIterations represents the actual run of the program
         int yIterations = 4;
         double[][] results = new double[totalThreads.length][yIterations];
         for(int i = 0; i < totalThreads.length; i++){
@@ -54,9 +57,9 @@ public class MainC {
             for (int j = 0; j < yIterations; j++) {
                 x = 0;
                 results[i][j] = run_experiments(totalThreads[i]) / 1_000_000_000.0;
-                //System.out.println( totalThreads[i] + ",: " + run_experiments(totalThreads[i])/ 1_000_000_000.0);
             }
         }
+        // Try catch block to write the output to a file
         try {
             FileWriter myWriter = new FileWriter("filename.txt"); 
             for (int i = 0; i < results.length; i++) {
@@ -71,8 +74,6 @@ public class MainC {
             e.printStackTrace();
         }
 
-        //long result = run_experiments(4);
         System.out.println("Final x: " + x);
-        //System.out.println("Elapsed time: " + result + " nanoseconds"); // Print the elapsed time
     }
 }

@@ -7,6 +7,7 @@ public class Main2C {
             for (int i = 0; i < 1000000; i++) {
                 sharedInt += 1;
             }
+            // Guarded block to notify the other thread
             synchronized(lock){
                 lock.notify();
             }
@@ -15,6 +16,7 @@ public class Main2C {
 
     public static class Printer implements Runnable {
         public void run() {
+            // Guarded block that waits for a notify() from the other thread
             synchronized(lock){
                 try {
                     while(sharedInt < 1000000){

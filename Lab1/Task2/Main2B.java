@@ -7,12 +7,14 @@ public class Main2B {
             for (int i = 0; i < 1000000; i++) {
                 sharedInt += 1;
             }
+            // Busy-waiting using a boolean flag
             done = true;
         }
     }
 
     public static class Printer implements Runnable {
         public void run() {
+            // Busy-waiting loop that waits for the boolean flag
             while(!done){}
             System.out.println("Shared Int: " + sharedInt);
         }

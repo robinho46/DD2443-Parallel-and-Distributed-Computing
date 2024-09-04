@@ -15,12 +15,12 @@ public class MainB {
         
         public void think() throws InterruptedException {
             System.out.println("Philosopher " + id + " is thinking");
-            Thread.sleep(((int) (Math.random() * 100)));    
+            Thread.sleep(((int) (Math.random() * 100))); // Sleeps for a random amount of time 
         }
 
         public void eat() throws InterruptedException {
             System.out.println("Philosopher " + id + " is eating");
-            Thread.sleep(((int) (Math.random() * 100)));
+            Thread.sleep(((int) (Math.random() * 100))); // Sleeps for a random amount of time 
         }
 
         @Override
@@ -28,12 +28,13 @@ public class MainB {
             try {
                 while (true) {
                     think();
+                    // Check if id is odd or even
                     if (id % 2 == 0) {
-                        acquireLocks(leftFork, rightFork);
+                        acquireLocks(leftFork, rightFork); // If id is even then start with the left fork and the right fork
                     } else {
-                        acquireLocks(rightFork, leftFork);
+                        acquireLocks(rightFork, leftFork); // If odd then start with right fork then left fork
                     }
-                    eat();
+                    eat(); // Start eat for a random amount of time
                     leftFork.unlock();
                     rightFork.unlock();
                 }
@@ -46,6 +47,7 @@ public class MainB {
             while (true) {
                 boolean gotFirstLock = false;
                 boolean gotSecondLock = false;
+                // Try to acquire both forks
                 try {
                     gotFirstLock = firstLock.tryLock();
                     gotSecondLock = secondLock.tryLock();
@@ -53,8 +55,9 @@ public class MainB {
                     if (gotFirstLock && gotSecondLock) {
                         return; // Successfully acquired both locks
                     }
+                    // Release if only one fork is available
                     if (gotFirstLock) {
-                        firstLock.unlock();
+                        firstLock.unlock(); 
                     }
                     if (gotSecondLock) {
                         secondLock.unlock();
