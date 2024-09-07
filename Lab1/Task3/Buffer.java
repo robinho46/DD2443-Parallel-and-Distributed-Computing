@@ -63,6 +63,7 @@ public class Buffer {
                 }
                 close = true;
                 full.signalAll(); // When the buffer is closed it signals the producer that the buffer is full
+                empty.signalAll(); // Signaling the waiting consumers
             }
         } finally {
             lock.unlock();
