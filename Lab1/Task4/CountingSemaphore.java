@@ -8,6 +8,7 @@ public class CountingSemaphore {
         // increases the permit, meaning a thread left the resource and +1 is available
         synchronized(this){
             permit += 1;
+            // System.out.println("Available resources: "+ permit); uncomment to check the available reosurces 
             notify();
         }
     }
@@ -15,10 +16,10 @@ public class CountingSemaphore {
     public void s_wait() throws InterruptedException {
         // decreases the permit, meaning a thread is waiting for a resource and -1 booked
         synchronized(this){
-            permit -= 1;
-            while(permit < 0){ // handling spurious wakeup
+            while(permit <= 0){ // handling spurious wakeup
                 wait();
             }
+            permit -= 1;
         }
     }
 }

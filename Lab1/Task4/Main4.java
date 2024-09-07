@@ -6,16 +6,16 @@ public class Main4 {
         }
 
         public void run() {
-            try{
+           try{
                 synchronized (semaphore) {
                     if (semaphore.permit <= 0){
-                        System.out.println("Thread id " + Thread.currentThread().getId() + " must wait no resources are left.");
+                        System.out.println("Thread id " + Thread.currentThread().getId() + " must wait no resources are left. " );
                     }
                     semaphore.s_wait();
                     System.out.println("Thread id " + Thread.currentThread().getId() + " took 1 resource out of " + (semaphore.permit + 1) + " left");
                 }
 
-                Thread.sleep(10000); // should be removed to demonstrate no deadlocks
+                //Thread.sleep(10000); // should be removed to demonstrate no deadlocks
                 semaphore.signal(); // should be removed to demonstrate deadlock where it should be deadlock
 
             }catch (InterruptedException e){
@@ -25,15 +25,16 @@ public class Main4 {
     }
 
     public static void main(String [] args) throws InterruptedException {
-        CountingSemaphore semaphore = new CountingSemaphore(3);
-        Thread[] threads = new Thread[5];
+        CountingSemaphore semaphore = new CountingSemaphore(1);
+        int threadNumb = 3;
+        Thread[] threads = new Thread[threadNumb];
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < threadNumb; i++){
             threads[i] = new Thread(new Runner(semaphore));
             threads[i].start();
         }
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < threadNumb; i++){
             try {
                 threads[i].join();
             }catch (InterruptedException e){
