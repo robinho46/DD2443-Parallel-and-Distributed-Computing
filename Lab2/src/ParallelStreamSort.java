@@ -1,6 +1,22 @@
 import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Sort using Java's ParallelStreams and Lambda functions.
+ *
+ * Hints:
+ * - Do not take advice from StackOverflow.
+ * - Think outside the box.
+ *      - Stream of threads?
+ *      - Stream of function invocations?
+ *
+ * By default, the number of threads in parallel stream is limited by the
+ * number of cores in the system. You can limit the number of threads used by
+ * parallel streams by wrapping it in a ForkJoinPool.
+ *      ForkJoinPool myPool = new ForkJoinPool(threads);
+ *      myPool.submit(() -> "my parallel stream method / function");
+ */
+
 public class ParallelStreamSort implements Sorter {
         private final int threads;
         private final ForkJoinPool pool;
