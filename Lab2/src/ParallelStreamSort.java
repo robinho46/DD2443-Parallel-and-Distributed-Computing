@@ -1,5 +1,3 @@
-import java.util.Arrays;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Sort using Java's ParallelStreams and Lambda functions.
@@ -17,55 +15,92 @@ import java.util.concurrent.ForkJoinPool;
  *      myPool.submit(() -> "my parallel stream method / function");
  */
 
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveAction;
+
 public class ParallelStreamSort implements Sorter {
-        private final int threads;
-        private final ForkJoinPool pool;
+	public final int threads;
 
-        public ParallelStreamSort(int threads) {
-                this.threads = threads;
-                this.pool = new ForkJoinPool(threads);
-        }
-        public void sort(int[] arr) {
-                pool.submit(() -> {
-                        int[] sortedArr = parallelMergeSort(arr);
-                        System.arraycopy(sortedArr, 0, arr, 0, arr.length);
-                }).join();
-        }
-        public int getThreads() {
-                return threads;
-        }
+	public ParallelStreamSort(int threads) {
+		this.threads = threads;
+	}
 
-        private int[] parallelMergeSort(int[] arr) {
-                if (arr.length <= 1) {
-                        return arr;
-                }
-                int mid = arr.length / 2;
+	public void sort(int[] arr) {
+		if(arr.length <= 1){
+			return;
+		}
 
-                int[] left = pool.submit(() -> parallelMergeSort(Arrays.copyOfRange(arr, 0, mid))).join();
-                int[] right = pool.submit(() -> parallelMergeSort(Arrays.copyOfRange(arr, mid, arr.length))).join();
+		ForkJoinPool customThreadPool = new ForkJoinPool(threads);
+		customThreadPool.submit(() -> mergeSort(arr, 0, arr.length - 1)).join();
+	}
 
-                return merge(left, right);
-        }
+	public int getThreads() {
+		return threads;
+	}
 
-        private int[] merge(int[] left, int[] right) {
-                int[] result = new int[left.length + right.length];
-                int i = 0, j = 0, k = 0;
+	private void mergeSort(int[] arr, int left, int right) {
+		if (left < right) {
+			int middle = (left + right) / 2;
 
-                while (i < left.length && j < right.length) {
-                        if (left[i] <= right[j]) {
-                                result[k++] = left[i++];
-                        } else {
-                                result[k++] = right[j++];
-                        }
-                }
-                while (i < left.length) {
-                        result[k++] = left[i++];
-                }
+			RecursiveAction leftSort = new RecursiveAction() {
+				@Override
+				protected void compute() {
+					mergeSort(arr, left, middle);
+				}
+			};
 
-                while (j < right.length) {
-                        result[k++] = right[j++];
-                }
+			RecursiveAction rightSort = new RecursiveAction() {
+				@Override
+				protected void compute() {
+					mergeSort(arr, middle + 1, right);
+				}
+			};
+			ForkJoinTask.invokeAll(leftSort, rightSort); //handles the parralel execution of the two leftSort and RightSort recursive actiontask.
+			merge(arr, left, middle, right);
+		}
+	}
 
-                return result;
-        }
+	public static void merge(int[] arr, int left, int mid, int right) {
+		int n1 = mid - left + 1;
+	        int n2 = right - mid;
+
+		int[] leftArray = new int[n1];
+	        int[] rightArray = new int[n2];
+
+	        // Copy data to temp arrays leftArray[] and rightArray[]
+	        for (int i = 0; i < n1; i++) {
+			leftArray[i] = arr[left + i];
+		}
+		for (int i = 0; i < n2; i++) {
+			rightArray[i] = arr[mid + 1 + i];
+		}
+
+		// Merge the temp arrays
+		int i = 0, j = 0, k = left;
+		while (i < n1 && j < n2) {
+			if (leftArray[i] <= rightArray[j]) {
+				arr[k] = leftArray[i];
+				i++;
+			} else {
+				arr[k] = rightArray[j];
+				j++;
+			}
+			k++;
+		}
+
+		// Copy remaining elements of leftArray[], if any
+		while (i < n1) {
+			arr[k] = leftArray[i];
+			i++;
+			k++;
+		}
+
+		// Copy remaining elements of rightArray[], if any
+		while (j < n2) {
+			arr[k] = rightArray[j];
+			j++;
+			k++;
+		}
+	}
 }
