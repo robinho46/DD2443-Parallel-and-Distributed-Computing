@@ -2,69 +2,81 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 public class ForkJoinPoolSort implements Sorter {
-	public final int threads;
-        private final ForkJoinPool pool;
+	private final ForkJoinPool pool;
+	private final int threads;
 
-        public ForkJoinPoolSort(int threads) {
-                this.threads = threads;
-                pool = new ForkJoinPool(threads);
-        }
+	private static final int SORT_THRESHOLD = 16;
 
-        public void sort(int[] arr) {
-                pool.invoke(new Worker(arr, 0, arr.length));
-        }
+	public ForkJoinPoolSort(int threads) {
+		this.pool = new ForkJoinPool(threads);
+		this.threads = threads;
+	}
 
-        public int getThreads() {
-                return threads;
-        }
+	@Override
+	public void sort(int[] arr) {
+		if (arr == null || arr.length <= 1) return;
+		int[] temp = new int[arr.length];
+		pool.invoke(new Worker(arr, temp, 0, arr.length - 1));
+	}
 
-        private static class Worker extends RecursiveAction {
-                private final int[] arr;
-                private final int left, right;
+	@Override
+	public int getThreads() {
+		return this.threads;
+	}
 
-                public Worker(int[] arr, int left, int right) {
-                        this.arr = arr;
-                        this.left = left;
-                        this.right = right;
-                }
-                protected void compute() {
-                        if (right - left <= 1) {
-                                return;
-                        }
+	private static class Worker extends RecursiveAction {
+		private final int[] arr, temp;
+		private final int left, right;
 
-                        int mid = (left + right) / 2;
-                        Worker leftTask = new Worker(arr, left, mid);
-                        Worker rightTask = new Worker(arr, mid, right);
+		public Worker(int[] arr, int[] temp, int left, int right) {
+			this.arr = arr;
+			this.temp = temp;
+			this.left = left;
+			this.right = right;
+		}
 
-                        // fork tasks
-                        leftTask.fork();
-                        rightTask.fork();
+		@Override
+		protected void compute() {
+			if (right - left + 1 <= SORT_THRESHOLD) {
+				sequentialMergeSort(arr, temp, left, right);
+				return;
+			}
 
-                        // join tasks
-                        leftTask.join();
-                        rightTask.join();
+			int mid = (left + right) / 2;
+			Worker leftTask = new Worker(arr, temp, left, mid);
+			Worker rightTask = new Worker(arr, temp, mid + 1, right);
 
-                        merge(arr, left, mid, right);
+			invokeAll(leftTask, rightTask);
+			merge(arr, temp, left, mid, right);
+		}
 
-                }
-                private void merge(int[] arr, int left, int mid, int right) {
-                        int[] temp = new int[right - left];
-                        int i = left, j = mid, k = 0;
+		private void sequentialMergeSort(int[] arr, int[] temp, int left, int right) {
+			if (left >= right) return;
 
-                        while (i < mid && j < right) {
-                                if (arr[i] <= arr[j]) {
-                                        temp[k++] = arr[i++];
-                                } else {
-                                        temp[k++] = arr[j++];
-                                }
-                        }
-                        while (i < mid) {
-                                temp[k++] = arr[i++];
-                        }
-                        while (j < right) {
-                                temp[k++] = arr[j++];
-                        }
-                        System.arraycopy(temp, 0, arr, left, temp.length);
-                }
-        }
+			int mid = (left + right) / 2;
+			sequentialMergeSort(arr, temp, left, mid);
+			sequentialMergeSort(arr, temp, mid + 1, right);
+			merge(arr, temp, left, mid, right);
+		}
+
+		private void merge(int[] arr, int[] temp, int left, int mid, int right) {
+			System.arraycopy(arr, left, temp, left, right - left + 1);
+
+		        int i = left;
+			int j = mid + 1;
+			int k = left;
+
+			while (i <= mid && j <= right) {
+				if (temp[i] <= temp[j]) {
+					arr[k++] = temp[i++];
+				} else {
+					arr[k++] = temp[j++];
+				}
+			}
+
+			while (i <= mid) {
+				arr[k++] = temp[i++];
+			}
+		}
+	}
 }
