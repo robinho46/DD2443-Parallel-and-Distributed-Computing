@@ -81,7 +81,7 @@ public class Main {
                 case "Default": 
                         return new LockFreeSkipList();
                 case "Locked":
-                        // TODO: Add your own set
+                       return new LockedFreeSkipList();
                 case "LocalLog":
                         // TODO: Add your own set
                 case "GlobalLog":
