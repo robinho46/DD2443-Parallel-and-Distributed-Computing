@@ -65,9 +65,9 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
         Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
         while (true) {
             boolean found = find(x, preds, succs);
+            long linearizationTime = System.nanoTime(); // point - fail
             if (found) {
-                long linearizationTime = System.nanoTime(); // point - fail
-                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), false, linearizationTime));
+                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), false, linearizationTime)); // res logged if fail
                 return false;
             } else {
                 Node<T> newNode = new Node<>(x, topLevel);
@@ -80,8 +80,7 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
                 if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
                     continue;
                 }
-                long linearizationTime = System.nanoTime(); // point - succ
-                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), true, linearizationTime));
+                linearizationTime = System.nanoTime(); // point - succ
                 for (int level = bottomLevel + 1; level <= topLevel; level++) {
                     while (true) {
                         pred = preds[level];
@@ -92,6 +91,7 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
                         find(x, preds, succs);
                     }
                 }
+                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), true, linearizationTime)); // res logged if succ
                 return true;
             }
         }
@@ -105,9 +105,9 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
         Node<T> succ;
         while (true) {
             boolean found = find(x, preds, succs);
+            long linearizationTime = System.nanoTime(); // point - fail
             if (!found) {
-                long linearizationTime = System.nanoTime(); // point - fail
-                log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime));
+                log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime)); // res logged if fail
                 return false;
             } else {
                 Node<T> nodeToRemove = succs[bottomLevel];
@@ -123,15 +123,16 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
                 succ = nodeToRemove.next[bottomLevel].get(marked);
                 while (true) {
                     boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
-                    long linearizationTime = System.nanoTime(); // point - succ/fail
+                    linearizationTime = System.nanoTime(); // point - succ/fail on marking
                     if (iMarkedIt) {
-                        log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, linearizationTime));
                         find(x, preds, succs);
+                        log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, linearizationTime)); // res logged if succ mark
+
                         return true;
                     } else {
                         succ = nodeToRemove.next[bottomLevel].get(marked);
                         if (marked[0]) { // point - special case
-                            log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime));
+                            log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime)); // res logged if fail mark
                             return false;
                         }
                     }
@@ -162,8 +163,9 @@ public class LockFreeSkipList<T extends Comparable<T>> implements LockFreeSet<T>
                 }
             }
         }
+
+        long linearizationTime = System.nanoTime(); // at node, linpoint
         boolean result = curr.value != null && x.compareTo(curr.value) == 0;
-        long linearizationTime = System.nanoTime(); // point - res
         log.add(new Log.Entry(Log.Method.CONTAINS, x.hashCode(), result, linearizationTime));
         return result;
     }
