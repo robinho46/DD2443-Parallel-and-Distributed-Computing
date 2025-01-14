@@ -11,7 +11,7 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
     private final Node<T> tail = new Node<>();
 
     private final ConcurrentLinkedQueue<Log.Entry> log = new ConcurrentLinkedQueue<>();
-    private final ReentrantLock linpoint = new ReentrantLock();
+    private ReentrantLock lock = new ReentrantLock();
 
     public LockedFreeSkipList() {
         for (int i = 0; i < head.next.length; i++) {
@@ -66,19 +66,11 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
         Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL + 1];
         Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
         while (true) {
-            boolean found;
-            long linearizationTime;
-            linpoint.lock();
-            try {
-                found = find(x, preds, succs);
-                linearizationTime = System.nanoTime(); // linpoint - if failed
-            } finally {
-                linpoint.unlock();
-            }
-
-
+            Object[] result = find(x, preds, succs);
+            boolean found = (boolean) result[0];
+            long time = (long) result[1];
             if (found) {
-                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), false, linearizationTime)); //results logged if failed
+                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), false, time)); // res logged if fail
                 return false;
             } else {
                 Node<T> newNode = new Node<>(x, topLevel);
@@ -88,17 +80,10 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
                 }
                 Node<T> pred = preds[bottomLevel];
                 Node<T> succ = succs[bottomLevel];
-                
-                linpoint.lock();
-                try {
-                    if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
-                        continue;
-                    }
-                    linearizationTime = System.nanoTime(); // point - sucess
-                } finally{
-                    linpoint.unlock();
+                if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
+                    continue;
                 }
-    
+                time = System.nanoTime(); // point - succ
                 for (int level = bottomLevel + 1; level <= topLevel; level++) {
                     while (true) {
                         pred = preds[level];
@@ -109,7 +94,7 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
                         find(x, preds, succs);
                     }
                 }
-                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), true, linearizationTime)); // results logged
+                log.add(new Log.Entry(Log.Method.ADD, x.hashCode(), true, time)); // res logged if succ
                 return true;
             }
         }
@@ -122,19 +107,11 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
         Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
         Node<T> succ;
         while (true) {
-            boolean found;
-            long linearizationTime;
-            
-            linpoint.lock();
-            try {
-                found = find(x, preds, succs);
-                linearizationTime = System.nanoTime(); // point - find
-            } finally {
-                linpoint.unlock();
-            }
-
+            Object[] result = find(x, preds, succs);
+            boolean found = (boolean) result[0];
+            long time = (long) result[1];
             if (!found) {
-                log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime)); // result logged if failed
+                log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, time)); // res logged if fail
                 return false;
             } else {
                 Node<T> nodeToRemove = succs[bottomLevel];
@@ -149,24 +126,17 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
                 boolean[] marked = {false};
                 succ = nodeToRemove.next[bottomLevel].get(marked);
                 while (true) {
-                    boolean iMarkedIt;
-
-                    linpoint.lock();
-                    try {
-                        iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
-                        linearizationTime = System.nanoTime(); // point - succ/fail on marking
-                    } finally {
-                        linpoint.unlock();
-                    }
-
+                    boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
+                    time = System.nanoTime(); // point - succ/fail on marking
                     if (iMarkedIt) {
                         find(x, preds, succs);
-                        log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, linearizationTime)); // results 
+                        log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, time)); // res logged if succ mark
+
                         return true;
                     } else {
                         succ = nodeToRemove.next[bottomLevel].get(marked);
-                        if (marked[0]) { // results - special case
-                            log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime));
+                        if (marked[0]) { // point - special case
+                            log.add(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, time)); // res logged if fail mark
                             return false;
                         }
                     }
@@ -181,15 +151,27 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
         Node<T> pred = head;
         Node<T> curr = null;
         Node<T> succ = null;
-
+        long linearizationTime = System.nanoTime();
+        boolean result = false;
         for (int level = MAX_LEVEL; level >= bottomLevel; level--) {
-            curr = pred.next[level].getReference();
+            lock.lock();
+            try {
+                curr = pred.next[level].getReference();
+                linearizationTime = System.nanoTime();
+            } finally {
+                lock.unlock();
+            }
             while (true) {
                 succ = curr.next[level].get(marked);
                 while (marked[0]) {
-                    curr = succ;
+                    lock.lock();
+                    try {
+                        curr = succ;
+                        linearizationTime = System.nanoTime();
+                    }finally {
+                        lock.unlock();
+                    }
                     succ = curr.next[level].get(marked);
-
                 }
                 if (curr.value != null && x.compareTo(curr.value) > 0) {
                     pred = curr;
@@ -199,31 +181,47 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
                 }
             }
         }
-        
-        long linearizationTime = System.nanoTime(); // at node, real-time, res doesn't matter
-        boolean result = curr.value != null && x.compareTo(curr.value) == 0;
+
+        if(curr.value != null && x.compareTo(curr.value) == 0){
+            result = true;
+        }
         log.add(new Log.Entry(Log.Method.CONTAINS, x.hashCode(), result, linearizationTime));
         return result;
     }
 
-    private boolean find(T x, Node<T>[] preds, Node<T>[] succs) {
+    private Object[] find(T x, Node<T>[] preds, Node<T>[] succs) {
         int bottomLevel = 0;
         boolean[] marked = {false};
         boolean snip;
         Node<T> pred = null;
         Node<T> curr = null;
         Node<T> succ = null;
+        long linearizationTime = System.nanoTime();
+        boolean result = false;
         retry:
         while (true) {
             pred = head;
             for (int level = MAX_LEVEL; level >= bottomLevel; level--) {
-                curr = pred.next[level].getReference();
+                lock.lock();
+                try {
+                    curr = pred.next[level].getReference();
+                    linearizationTime = System.nanoTime(); // point - fail
+                } finally {
+                    lock.unlock();
+                }
                 while (true) {
                     succ = curr.next[level].get(marked);
                     while (marked[0]) {
                         snip = pred.next[level].compareAndSet(curr, succ, false, false);
                         if (!snip) continue retry;
-                        curr = succ;
+                        lock.lock();
+                        try {
+                            curr = succ;
+                            linearizationTime = System.nanoTime(); // point - fail
+
+                        }finally {
+                            lock.unlock();
+                        }
                         succ = curr.next[level].get(marked);
                     }
                     if (curr.value != null && x.compareTo(curr.value) > 0) {
@@ -236,18 +234,29 @@ public class LockedFreeSkipList<T extends Comparable<T>> implements LockFreeSet<
                 preds[level] = pred;
                 succs[level] = curr;
             }
-            return curr.value != null && x.compareTo(curr.value) == 0;
+            if(curr.value != null && x.compareTo(curr.value) == 0){
+                result = true;
+            }
+            return new Object[] {result, linearizationTime};
         }
     }
-    
+
     public Log.Entry[] getLog() {
         return log.toArray(new Log.Entry[0]);
     }
 
     public void reset() {
+        // Reset the head and tail nodes' next pointers
         for (int i = 0; i < head.next.length; i++) {
             head.next[i] = new AtomicMarkableReference<>(tail, false);
         }
+
+        // Optionally reset the mark on the tail node, if needed
+        for (int i = 0; i < tail.next.length; i++) {
+            tail.next[i] = new AtomicMarkableReference<>(null, false);  // Resetting the tail node
+        }
+
+        // Clear the log
         log.clear();
     }
 }

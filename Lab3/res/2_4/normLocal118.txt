@@ -1,0 +1,157 @@
+1 ----------------------------------------------
+Warmup time: 201102528
+Warmup discrepancy: 0
+Warmup time: 172923886
+Warmup discrepancy: 0
+Warmup time: 134372108
+Warmup discrepancy: 0
+Warmup time: 144638579
+Warmup discrepancy: 0
+Warmup time: 174558703
+Warmup discrepancy: 0
+Measurement time: 145073018
+Measurement discrepancy: 0
+Measurement time: 188752729
+Measurement discrepancy: 0
+Measurement time: 130157492
+Measurement discrepancy: 0
+Measurement time: 131843856
+Measurement discrepancy: 0
+Measurement time: 175469758
+Measurement discrepancy: 0
+Measurement time: 155974077
+Measurement discrepancy: 0
+Measurement time: 147334535
+Measurement discrepancy: 0
+Measurement time: 147202086
+Measurement discrepancy: 0
+Measurement time: 146715198
+Measurement discrepancy: 0
+Measurement time: 156005611
+Measurement discrepancy: 0
+2 ----------------------------------------------
+Warmup time: 271021643
+Warmup discrepancy: 0
+Warmup time: 194732008
+Warmup discrepancy: 0
+Warmup time: 167563237
+Warmup discrepancy: 0
+Warmup time: 167103015
+Warmup discrepancy: 0
+Warmup time: 184571794
+Warmup discrepancy: 0
+Measurement time: 202726702
+Measurement discrepancy: 0
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 183858071
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 168010807
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 172743907
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 175085891
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 185416153
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 169372784
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 179459377
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 215144871
+Measurement discrepancy: 1
+Discrepancy in contain: arg=51235, expected=false, actual=true, timestamp=32545645562629
+Measurement time: 183707026
+Measurement discrepancy: 1
+4 ----------------------------------------------
+Warmup time: 334267475
+Warmup discrepancy: 0
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Warmup time: 250983440
+Warmup discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Warmup time: 226470654
+Warmup discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Warmup time: 218815121
+Warmup discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Warmup time: 199368007
+Warmup discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 204184467
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 194405534
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 205025812
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 190223356
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 221991868
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 208719416
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 220919866
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 200628807
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 198445001
+Measurement discrepancy: 1
+Discrepancy in contain: arg=56159, expected=false, actual=true, timestamp=32549498335387
+Measurement time: 212341928
+Measurement discrepancy: 1
+8 ----------------------------------------------
+Warmup time: 435456301
+Warmup discrepancy: 0
+Warmup time: 420854994
+Warmup discrepancy: 0
+Warmup time: 327826903
+Warmup discrepancy: 0
+Warmup time: 293689242
+Warmup discrepancy: 0
+Warmup time: 310208433
+Warmup discrepancy: 0
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 323077168
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 336623680
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 320955081
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 306157983
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 317368029
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 330396396
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 367199530
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 304615362
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 407395508
+Measurement discrepancy: 1
+Discrepancy in contain: arg=55660, expected=false, actual=true, timestamp=32560255753011
+Measurement time: 317981359
+Measurement discrepancy: 1

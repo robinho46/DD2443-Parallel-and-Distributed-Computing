@@ -51,14 +51,16 @@ public class Main {
                 }
 
                 for (int i = 0; i < warmups; ++i) {
+			set.reset();
                         long time = Experiment.run(threads, opsPerThread, set, opsDistribution, valuesDistribution);
                         int discrepancy = Log.validate(set.getLog());
                         System.err.println("Warmup time: " + time);
                         System.err.println("Warmup discrepancy: " + discrepancy);
-                }
-
+		}
+		
                 for (int i = 0; i < measurements; ++i) {
-                        long time = Experiment.run(threads, opsPerThread, set, opsDistribution, valuesDistribution);
+			set.reset();
+			long time = Experiment.run(threads, opsPerThread, set, opsDistribution, valuesDistribution);
                         int discrepancy = Log.validate(set.getLog());
                         System.err.println("Measurement time: " + time);
                         System.err.println("Measurement discrepancy: " + discrepancy);
@@ -83,9 +85,9 @@ public class Main {
                 case "Locked":
                        return new LockedFreeSkipList();
                 case "LocalLog":
-                        // TODO: Add your own set
+                        return new LockFreeSkipListLocal();
                 case "GlobalLog":
-                        // TODO: Add your own set
+			return new LockFreeSkipListGlobal();
                 default: 
                         return null;
                 }

@@ -1,6 +1,6 @@
-import java.util.concurrent.atomic.AtomicMarkableReference;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFreeSet<T> {
     /* Number of levels */
@@ -8,7 +8,6 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
 
     private final Node<T> head = new Node<>();
     private final Node<T> tail = new Node<>();
-
     private final LockFreeGlobalLog log = new LockFreeGlobalLog();
 
     public LockFreeSkipListGlobal() {
@@ -25,7 +24,7 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
         @SuppressWarnings("unchecked")
         public Node() {
             value = null;
-            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[MAX_LEVEL + 1];
+            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[MAX_LEVEL+1];
             for (int i = 0; i < next.length; i++) {
                 next[i] = new AtomicMarkableReference<>(null, false);
             }
@@ -35,7 +34,7 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
         @SuppressWarnings("unchecked")
         public Node(T x, int height) {
             value = x;
-            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[height + 1];
+            next = (AtomicMarkableReference<Node<T>>[]) new AtomicMarkableReference[height+1];
             for (int i = 0; i < next.length; i++) {
                 next[i] = new AtomicMarkableReference<>(null, false);
             }
@@ -43,8 +42,8 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
         }
     }
 
-    /* Returns a level between 0 to MAX_LEVEL,
-     * P[randomLevel() = x] = 1/2^(x+1), for x < MAX_LEVEL.
+    /* Returns a random level between 0 and MAX_LEVEL,
+     * with probability P(randomLevel() = x) = 1/2^(x+1) for x < MAX_LEVEL.
      */
     private static int randomLevel() {
         int r = ThreadLocalRandom.current().nextInt();
@@ -62,13 +61,14 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
     public boolean add(int threadId, T x) {
         int topLevel = randomLevel();
         int bottomLevel = 0;
-        Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL + 1];
-        Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
+        Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL+1];
+        Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL+1];
         while (true) {
-            boolean found = find(x, preds, succs);
-            long linearizationTime = System.nanoTime(); // point - fail
+            Object[] result = find(x, preds, succs);
+            boolean found = (boolean) result[0];
+            long time = (long) result[1];
             if (found) {
-                log.addLogEntry(new Log.Entry(Log.Method.ADD, x.hashCode(), false, linearizationTime)); // res logged if fail
+                log.addLogEntry(new Log.Entry(Log.Method.ADD, x.hashCode(), false, time));
                 return false;
             } else {
                 Node<T> newNode = new Node<>(x, topLevel);
@@ -80,8 +80,8 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
                 if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
                     continue;
                 }
-                linearizationTime = System.nanoTime(); // point - succ
-                for (int level = bottomLevel + 1; level <= topLevel; level++) {
+                time = System.nanoTime(); // linearization point for a successful add
+                for (int level = bottomLevel+1; level <= topLevel; level++) {
                     while (true) {
                         pred = preds[level];
                         succ = succs[level];
@@ -91,7 +91,7 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
                         find(x, preds, succs);
                     }
                 }
-                log.addLogEntry(new Log.Entry(Log.Method.ADD, x.hashCode(), true, linearizationTime)); // res logged if succ
+                log.addLogEntry(new Log.Entry(Log.Method.ADD, x.hashCode(), true, time));
                 return true;
             }
         }
@@ -101,14 +101,15 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
     @SuppressWarnings("unchecked")
     public boolean remove(int threadId, T x) {
         int bottomLevel = 0;
-        Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL + 1];
-        Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL + 1];
+        Node<T>[] preds = (Node<T>[]) new Node[MAX_LEVEL+1];
+        Node<T>[] succs = (Node<T>[]) new Node[MAX_LEVEL+1];
         Node<T> succ;
         while (true) {
-            boolean found = find(x, preds, succs);
-            long linearizationTime = System.nanoTime(); // point - fail
+            Object[] result = find(x, preds, succs);
+            boolean found = (boolean) result[0];
+            long time = (long) result[1];
             if (!found) {
-                log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime));  // res logged if fail
+                log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, time));
                 return false;
             } else {
                 Node<T> nodeToRemove = succs[bottomLevel];
@@ -124,15 +125,15 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
                 succ = nodeToRemove.next[bottomLevel].get(marked);
                 while (true) {
                     boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
-                    linearizationTime = System.nanoTime(); // res logged if succ mark
+                    time = System.nanoTime(); // linearization point for removal
                     if (iMarkedIt) {
                         find(x, preds, succs);
-                        log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, linearizationTime)); // res logged if succ mark
+                        log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), true, time));
                         return true;
                     } else {
                         succ = nodeToRemove.next[bottomLevel].get(marked);
                         if (marked[0]) {
-                            log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, linearizationTime)); // res logged if fail mark
+                            log.addLogEntry(new Log.Entry(Log.Method.REMOVE, x.hashCode(), false, time));
                             return false;
                         }
                     }
@@ -151,10 +152,12 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
         long linearizationTime;
         for (int level = MAX_LEVEL; level >= bottomLevel; level--) {
             curr = pred.next[level].getReference();
+            linearizationTime = System.nanoTime();
             while (true) {
                 succ = curr.next[level].get(marked);
                 while (marked[0]) {
                     curr = succ;
+                    linearizationTime = System.nanoTime();
                     succ = curr.next[level].get(marked);
                 }
                 if (curr.value != null && x.compareTo(curr.value) > 0) {
@@ -165,30 +168,35 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
                 }
             }
         }
-
-        linearizationTime = System.nanoTime(); // at node, linppoint
-        boolean result = curr.value != null && x.compareTo(curr.value) == 0;
+        linearizationTime = System.nanoTime();
+        boolean result = (curr.value != null && x.compareTo(curr.value) == 0);
         log.addLogEntry(new Log.Entry(Log.Method.CONTAINS, x.hashCode(), result, linearizationTime));
         return result;
     }
 
-    private boolean find(T x, Node<T>[] preds, Node<T>[] succs) {
+    @SuppressWarnings("unchecked")
+    private Object[] find(T x, Node<T>[] preds, Node<T>[] succs) {
         int bottomLevel = 0;
         boolean[] marked = {false};
         boolean snip;
         Node<T> pred = null;
         Node<T> curr = null;
         Node<T> succ = null;
+        long linearizationTime = System.nanoTime();
+        boolean result = false;
         retry:
         while (true) {
             pred = head;
             for (int level = MAX_LEVEL; level >= bottomLevel; level--) {
                 curr = pred.next[level].getReference();
+                linearizationTime = System.nanoTime();
                 while (true) {
                     succ = curr.next[level].get(marked);
                     while (marked[0]) {
                         snip = pred.next[level].compareAndSet(curr, succ, false, false);
-                        if (!snip) continue retry;
+                        if (!snip)
+                            continue retry;
+                        linearizationTime = System.nanoTime();
                         curr = succ;
                         succ = curr.next[level].get(marked);
                     }
@@ -202,15 +210,21 @@ public class LockFreeSkipListGlobal<T extends Comparable<T>> implements LockFree
                 preds[level] = pred;
                 succs[level] = curr;
             }
-            return curr.value != null && x.compareTo(curr.value) == 0;
+            if (curr.value != null && x.compareTo(curr.value) == 0) {
+                result = true;
+            }
+            return new Object[] {result, linearizationTime};
         }
     }
 
+    @Override
     public Log.Entry[] getLog() {
-        List<Log.Entry> entries = log.getLogEntries();
+        List<Log.Entry> entries = log.getLogEntries(); // take a snapshot (does not drain)
+        entries.sort((e1, e2) -> Long.compare(e1.timestamp, e2.timestamp));
         return entries.toArray(new Log.Entry[0]);
     }
 
+    @Override
     public void reset() {
         for (int i = 0; i <= MAX_LEVEL; i++) {
             head.next[i].set(tail, false);

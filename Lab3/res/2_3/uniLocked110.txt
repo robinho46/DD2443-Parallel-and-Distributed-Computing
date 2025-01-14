@@ -1,0 +1,44 @@
+1 ----------------------------------------------
+Measurement time: 288164464
+Measurement time: 302819200
+Measurement time: 273528742
+Measurement time: 259545018
+Measurement time: 415166155
+Measurement time: 272774647
+Measurement time: 243349448
+Measurement time: 262316894
+Measurement time: 253708201
+Measurement time: 261046613
+2 ----------------------------------------------
+Measurement time: 1319976444
+Measurement time: 1283575855
+Measurement time: 1392398568
+Measurement time: 1403449286
+Measurement time: 1232817975
+Measurement time: 1422803872
+Measurement time: 1367371227
+Measurement time: 1266862758
+Measurement time: 1250530499
+Measurement time: 1324818862
+4 ----------------------------------------------
+Measurement time: 4104654411
+Measurement time: 3720835565
+Measurement time: 3013727046
+Measurement time: 4065531820
+Measurement time: 5002886513
+Measurement time: 4351349720
+Measurement time: 4957229753
+Measurement time: 4286002243
+Measurement time: 4597261916
+Measurement time: 4763725488
+8 ----------------------------------------------
+Measurement time: 11151633460
+Measurement time: 11656742084
+Measurement time: 11031300722
+Measurement time: 11014485856
+Measurement time: 9209219121
+Measurement time: 11805363408
+Measurement time: 11088571188
+Measurement time: 12012098198
+Measurement time: 11175030189
+Measurement time: 11820748209

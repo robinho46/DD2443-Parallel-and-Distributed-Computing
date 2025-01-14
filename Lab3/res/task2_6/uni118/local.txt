@@ -1,0 +1,77 @@
+1 ----------------------------------------------
+Measurement time: 920323635
+Measurement time: 928256924
+Measurement time: 940900067
+Measurement time: 875141155
+Measurement time: 843802464
+Measurement time: 890551456
+Measurement time: 908487584
+Measurement time: 904860421
+Measurement time: 908006027
+Measurement time: 914126262
+2 ----------------------------------------------
+Measurement time: 1405586999
+Measurement time: 1405763558
+Measurement time: 1408898765
+Measurement time: 1172713410
+Measurement time: 1213870882
+Measurement time: 1932826226
+Measurement time: 1245420032
+Measurement time: 1157166924
+Measurement time: 1483847236
+Measurement time: 1299846231
+4 ----------------------------------------------
+Measurement time: 1556151784
+Measurement time: 1490267819
+Measurement time: 1515396817
+Measurement time: 1525499228
+Measurement time: 1432715460
+Measurement time: 1590792648
+Measurement time: 1551183804
+Measurement time: 1499361100
+Measurement time: 1508383665
+Measurement time: 1471747766
+8 ----------------------------------------------
+Measurement time: 1756433807
+Measurement time: 1658007132
+Measurement time: 1714156634
+Measurement time: 1731390204
+Measurement time: 1651926171
+Measurement time: 1494977683
+Measurement time: 1691632063
+Measurement time: 1686883414
+Measurement time: 1614425991
+Measurement time: 1546701737
+16 ----------------------------------------------
+Measurement time: 1793838696
+Measurement time: 1878249533
+Measurement time: 1688075326
+Measurement time: 1900902157
+Measurement time: 1616734545
+Measurement time: 1941997204
+Measurement time: 1916901028
+Measurement time: 1760817512
+Measurement time: 1883020131
+Measurement time: 1854984390
+32 ----------------------------------------------
+Measurement time: 1965823830
+Measurement time: 1775955766
+Measurement time: 1945839867
+Measurement time: 1915249566
+Measurement time: 1917398898
+Measurement time: 1909032686
+Measurement time: 1935988280
+Measurement time: 1878220909
+Measurement time: 1865883445
+Measurement time: 1911057348
+48 ----------------------------------------------
+Measurement time: 2114653049
+Measurement time: 2258911507
+Measurement time: 2107970855
+Measurement time: 2224531139
+Measurement time: 2239563873
+Measurement time: 2168170194
+Measurement time: 2117313205
+Measurement time: 2075606967
+Measurement time: 2071269124
+Measurement time: 2217714408

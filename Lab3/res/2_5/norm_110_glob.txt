@@ -1,0 +1,102 @@
+1 ----------------------------------------------
+Measurement time: 152765505
+Measurement discrepancy: 0
+Measurement time: 128316767
+Measurement discrepancy: 0
+Measurement time: 129593061
+Measurement discrepancy: 0
+Measurement time: 125996246
+Measurement discrepancy: 0
+Measurement time: 142019360
+Measurement discrepancy: 0
+Measurement time: 136695467
+Measurement discrepancy: 0
+Measurement time: 145519027
+Measurement discrepancy: 0
+Measurement time: 140082573
+Measurement discrepancy: 0
+Measurement time: 128974079
+Measurement discrepancy: 0
+Measurement time: 120988338
+Measurement discrepancy: 0
+2 ----------------------------------------------
+Measurement time: 187989323
+Measurement discrepancy: 0
+Measurement time: 155079650
+Measurement discrepancy: 0
+Measurement time: 156966687
+Measurement discrepancy: 0
+Measurement time: 168404184
+Measurement discrepancy: 0
+Measurement time: 161901882
+Measurement discrepancy: 0
+Measurement time: 153035933
+Measurement discrepancy: 0
+Measurement time: 152324929
+Measurement discrepancy: 0
+Measurement time: 149531860
+Measurement discrepancy: 0
+Measurement time: 147571886
+Measurement discrepancy: 0
+Measurement time: 151253603
+Measurement discrepancy: 0
+4 ----------------------------------------------
+Measurement time: 249972226
+Measurement discrepancy: 0
+Measurement time: 184522558
+Measurement discrepancy: 0
+Discrepancy found in remove: arg=51419, expected=true, actual=false, timestamp=35490463503068
+Discrepancy found in remove: arg=51419, expected=false, actual=true, timestamp=35490467020078
+Measurement time: 179265703
+Measurement discrepancy: 2
+Measurement time: 186216353
+Measurement discrepancy: 0
+Measurement time: 187958753
+Measurement discrepancy: 0
+Measurement time: 214061892
+Measurement discrepancy: 0
+Measurement time: 165516660
+Measurement discrepancy: 0
+Discrepancy found in add: arg=40950, expected=true, actual=false, timestamp=35491635463607
+Discrepancy found in add: arg=40950, expected=false, actual=true, timestamp=35491635463760
+Measurement time: 168564083
+Measurement discrepancy: 2
+Measurement time: 181665939
+Measurement discrepancy: 0
+Measurement time: 171871658
+Measurement discrepancy: 0
+8 ----------------------------------------------
+Measurement time: 236451733
+Measurement discrepancy: 0
+Discrepancy found in add: arg=54779, expected=true, actual=false, timestamp=35495393514324
+Discrepancy found in add: arg=54779, expected=false, actual=true, timestamp=35495393514427
+Measurement time: 336366646
+Measurement discrepancy: 2
+Discrepancy found in add: arg=49503, expected=true, actual=false, timestamp=35495653603620
+Discrepancy found in add: arg=49503, expected=false, actual=true, timestamp=35495653605252
+Discrepancy found in add: arg=41475, expected=true, actual=false, timestamp=35495801948371
+Discrepancy found in add: arg=41475, expected=false, actual=true, timestamp=35495801948450
+Discrepancy found in add: arg=55147, expected=true, actual=false, timestamp=35495808633845
+Discrepancy found in add: arg=55147, expected=false, actual=true, timestamp=35495808633999
+Measurement time: 279309893
+Measurement discrepancy: 6
+Measurement time: 329193495
+Measurement discrepancy: 0
+Measurement time: 251580638
+Measurement discrepancy: 0
+Discrepancy found in add: arg=43725, expected=true, actual=false, timestamp=35496844687262
+Discrepancy found in add: arg=43725, expected=false, actual=true, timestamp=35496844687342
+Measurement time: 246526131
+Measurement discrepancy: 2
+Measurement time: 293493049
+Measurement discrepancy: 0
+Discrepancy found in add: arg=39097, expected=true, actual=false, timestamp=35497612465428
+Discrepancy found in add: arg=39097, expected=false, actual=true, timestamp=35497612465669
+Measurement time: 234881842
+Measurement discrepancy: 2
+Discrepancy found in add: arg=44026, expected=true, actual=false, timestamp=35497850098740
+Discrepancy found in add: arg=44026, expected=false, actual=true, timestamp=35497850098781
+Measurement time: 232639343
+Measurement discrepancy: 2
+Measurement time: 348500905
+Measurement discrepancy: 0

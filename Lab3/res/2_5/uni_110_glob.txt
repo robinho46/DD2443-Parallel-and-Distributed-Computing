@@ -1,0 +1,125 @@
+1 ----------------------------------------------
+Measurement time: 137437350
+Measurement discrepancy: 0
+Measurement time: 124429587
+Measurement discrepancy: 0
+Measurement time: 137380715
+Measurement discrepancy: 0
+Measurement time: 139166637
+Measurement discrepancy: 0
+Measurement time: 145707584
+Measurement discrepancy: 0
+Measurement time: 133270330
+Measurement discrepancy: 0
+Measurement time: 135648622
+Measurement discrepancy: 0
+Measurement time: 123266449
+Measurement discrepancy: 0
+Measurement time: 131337520
+Measurement discrepancy: 0
+Measurement time: 118362974
+Measurement discrepancy: 0
+2 ----------------------------------------------
+Warmup time: 214434019
+Warmup discrepancy: 0
+Warmup time: 164372724
+Warmup discrepancy: 0
+Warmup time: 166628653
+Warmup discrepancy: 0
+Discrepancy found in add: arg=75097, expected=true, actual=false, timestamp=36063360795051
+Discrepancy found in add: arg=75097, expected=false, actual=true, timestamp=36063360795107
+Warmup time: 180055396
+Warmup discrepancy: 2
+Warmup time: 165796821
+Warmup discrepancy: 0
+Measurement time: 163933370
+Measurement discrepancy: 0
+Discrepancy found in remove: arg=45250, expected=true, actual=false, timestamp=36064022361927
+Measurement time: 150618937
+Measurement discrepancy: 1
+Measurement time: 196885483
+Measurement discrepancy: 0
+Measurement time: 148053235
+Measurement discrepancy: 0
+Measurement time: 169174684
+Measurement discrepancy: 0
+Measurement time: 154434260
+Measurement discrepancy: 0
+Measurement time: 179442786
+Measurement discrepancy: 0
+Measurement time: 149348135
+Measurement discrepancy: 0
+Measurement time: 153265252
+Measurement discrepancy: 0
+Measurement time: 150479668
+Measurement discrepancy: 0
+4 ----------------------------------------------
+Warmup time: 296141458
+Warmup discrepancy: 0
+Warmup time: 223006717
+Warmup discrepancy: 0
+Discrepancy found in add: arg=40577, expected=true, actual=false, timestamp=36066326770116
+Discrepancy found in add: arg=40577, expected=false, actual=true, timestamp=36066326770129
+Warmup time: 199325184
+Warmup discrepancy: 2
+Warmup time: 216540658
+Warmup discrepancy: 0
+Warmup time: 226356654
+Warmup discrepancy: 0
+Measurement time: 234926015
+Measurement discrepancy: 0
+Measurement time: 181202220
+Measurement discrepancy: 0
+Measurement time: 263354507
+Measurement discrepancy: 0
+Measurement time: 186505299
+Measurement discrepancy: 0
+Measurement time: 184409972
+Measurement discrepancy: 0
+Measurement time: 245424218
+Measurement discrepancy: 0
+Measurement time: 203889908
+Measurement discrepancy: 0
+Measurement time: 195002588
+Measurement discrepancy: 0
+Measurement time: 188295677
+Measurement discrepancy: 0
+Measurement time: 224609020
+Measurement discrepancy: 0
+8 ----------------------------------------------
+Warmup time: 517985516
+Warmup discrepancy: 0
+Warmup time: 393932879
+Warmup discrepancy: 0
+Warmup time: 376848925
+Warmup discrepancy: 0
+Warmup time: 313701040
+Warmup discrepancy: 0
+Warmup time: 269347659
+Warmup discrepancy: 0
+Measurement time: 296773294
+Measurement discrepancy: 0
+Measurement time: 454044353
+Measurement discrepancy: 0
+Discrepancy found in add: arg=13797, expected=true, actual=false, timestamp=36073156587565
+Discrepancy found in add: arg=13797, expected=false, actual=true, timestamp=36073156587594
+Measurement time: 267603355
+Measurement discrepancy: 2
+Measurement time: 322146865
+Measurement discrepancy: 0
+Measurement time: 285724584
+Measurement discrepancy: 0
+Discrepancy found in remove: arg=59598, expected=true, actual=false, timestamp=36074446344214
+Discrepancy found in remove: arg=59598, expected=false, actual=true, timestamp=36074449051972
+Measurement time: 270915660
+Measurement discrepancy: 2
+Measurement time: 277068952
+Measurement discrepancy: 0
+Measurement time: 416191836
+Measurement discrepancy: 0
+Discrepancy found in remove: arg=30387, expected=true, actual=false, timestamp=36075736792868
+Discrepancy found in remove: arg=30387, expected=false, actual=true, timestamp=36075751404811
+Measurement time: 267328424
+Measurement discrepancy: 2
+Measurement time: 271403680
+Measurement discrepancy: 0
